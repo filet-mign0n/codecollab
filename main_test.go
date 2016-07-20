@@ -201,6 +201,8 @@ func TestConcurrentMessages(t *testing.T) {
 
 	tS := newTestStruct(t, expected_msgs)
 
+	time.Sleep(human_interval)
+	
 	c2 := newWSClient(t, tS.server.URL)
 	c2.write("Cnewuser2")
 
