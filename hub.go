@@ -33,10 +33,6 @@ func (h *hub) run() {
 	for {
 		select {
 		case c := <-h.register:
-			for k, _ := range h.clients {
-				logDebug("sending C to k.name " + k.ip)
-				c.send <- []byte("C" + k.name)
-			}
 			h.clients[c] = true
 			c.send <- []byte("M" + h.content)
 			logDebug("case c := <-h.register: " + c.ip + " " + c.name)

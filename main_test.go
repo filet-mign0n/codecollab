@@ -129,7 +129,7 @@ func TestTwoConnections(t *testing.T) {
 	tS := newTestStruct(t, expected_msgs)
 
 	time.Sleep(human_interval)
-	
+
 	c2 := newWSClient(t, tS.server.URL)
 	c2.write("Cnewuser")
 
@@ -160,10 +160,9 @@ func TestMultipleEvents(t *testing.T) {
 
 	tS := newTestStruct(t, expected_msgs)
 
-	c2 := newWSClient(t, tS.server.URL)
-
 	time.Sleep(human_interval)
 
+	c2 := newWSClient(t, tS.server.URL)
 	c2.write("Cnewuser2")
 
 	time.Sleep(human_interval)
