@@ -1,4 +1,5 @@
-# CodeCollab
+CodeCollab [![Build Status](https://travis-ci.org/filet-mign0n/codecollab.svg?branch=master)](https://travis-ci.org/filet-mign0n/codecollab)
+========
 
 Collaborative code editor. The server is written in Go to leverage the grace of concurrency patterns.
 
