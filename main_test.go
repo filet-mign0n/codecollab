@@ -128,6 +128,8 @@ func TestTwoConnections(t *testing.T) {
 	expected_msgs := []string{"M", "Cnewuser"}
 	tS := newTestStruct(t, expected_msgs)
 
+	time.Sleep(human_interval)
+	
 	c2 := newWSClient(t, tS.server.URL)
 	c2.write("Cnewuser")
 
@@ -159,6 +161,9 @@ func TestMultipleEvents(t *testing.T) {
 	tS := newTestStruct(t, expected_msgs)
 
 	c2 := newWSClient(t, tS.server.URL)
+
+	time.Sleep(human_interval)
+
 	c2.write("Cnewuser2")
 
 	time.Sleep(human_interval)
@@ -168,6 +173,7 @@ func TestMultipleEvents(t *testing.T) {
 	}
 
 	c2.Conn.Close()
+	
 	time.Sleep(human_interval)
 
 	if len(tS.h.clients) != 1 {
@@ -176,9 +182,13 @@ func TestMultipleEvents(t *testing.T) {
 
 	c3 := newWSClient(t, tS.server.URL)
 	c3.write("Cnewuser3")
+	
 	time.Sleep(human_interval)
+	
 	c3.write("W")
+	
 	time.Sleep(human_interval)
+	
 	c3.write("Mhello")
 
 	if len(tS.h.clients) != 2 {
@@ -186,6 +196,7 @@ func TestMultipleEvents(t *testing.T) {
 	}
 
 	time.Sleep(human_interval)
+	
 	c3.Conn.Close()
 
 	<-tS.done
@@ -230,7 +241,7 @@ func TestConcurrentMessages(t *testing.T) {
 	c2.write("W")
 
 	time.Sleep(human_interval)
-	
+
 	c2.write("Mblabla")
 
 	time.Sleep(human_interval)
