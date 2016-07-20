@@ -9,8 +9,7 @@ Collaborative code editor. The server is written in Go to leverage the grace of 
 Go 1.5 or above
 ###Install
 ```sh
-> cd $GOPATH/src && git clone https://github.com/filet-mign0n/codecollab &&
-> cd codecollab && go get ./... && go test && go build
+> cd $GOPATH/src && git clone https://github.com/filet-mign0n/codecollab && cd codecollab && go get ./... && go test && go build
 ```
 ###Launch
 ```sh
