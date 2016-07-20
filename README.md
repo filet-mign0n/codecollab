@@ -5,7 +5,8 @@ Online collaborative code editor. The server is written in Go to leverage the gr
 Go 1.5 or above
 ###Install
 ```sh
-> cd $GOPATH/src && git clone https://github.com/filet-mign0n/codecollab && cd codecollab && go test && go install
+> cd $GOPATH/src && git clone https://github.com/filet-mign0n/codecollab \
+> && cd codecollab && go get ./... && go test && go install
 ```
 ###Launch
 ```sh
