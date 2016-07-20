@@ -134,8 +134,8 @@ func (c *client) parse(m []byte) (*msg, error) {
 	}
 
 	i := string(m[0])
-	/* WebSocket text messages are parsed, 
-	   first we look for the prefix code, 
+	/* WebSocket text messages are parsed,
+	   first we look for the prefix code,
 	   then if any content follows        */
 
 	switch i {

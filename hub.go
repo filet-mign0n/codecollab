@@ -15,7 +15,6 @@ type hub struct {
 	content string
 }
 
-
 func NewHub() *hub {
 
 	var h = &hub{

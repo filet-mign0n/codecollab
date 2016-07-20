@@ -2,8 +2,8 @@ package main
 
 import (
 	"github.com/gorilla/websocket"
-	"net/http/httptest"
 	"net/http"
+	"net/http/httptest"
 	"reflect"
 	"testing"
 	"time"
@@ -116,13 +116,12 @@ func (tS *testStruct) testSlice(expected_msgs []string) {
 
 }
 
-
 func TestOneConnection(t *testing.T) {
 	expected_msgs := []string{"M"}
 	tS := newTestStruct(t, expected_msgs)
 
-    <- tS.done
-    tS.c.Conn.Close()
+	<-tS.done
+	tS.c.Conn.Close()
 }
 
 func TestTwoConnections(t *testing.T) {
@@ -146,16 +145,16 @@ func TestTwoConnections(t *testing.T) {
 		tS.t.Errorf("expected 1 clients in hub map, got %d", len(tS.h.clients))
 	}
 
-    <- tS.done
-    tS.c.Conn.Close()
+	<-tS.done
+	tS.c.Conn.Close()
 
 }
 
 func TestMultipleEvents(t *testing.T) {
 
-	expected_msgs := []string{"M", "Cnewuser2", 
-							  "Dnewuser2", "Cnewuser3",
-							  "Wnewuser3", "Mhello", "Dnewuser3"}
+	expected_msgs := []string{"M", "Cnewuser2",
+		"Dnewuser2", "Cnewuser3",
+		"Wnewuser3", "Mhello", "Dnewuser3"}
 
 	tS := newTestStruct(t, expected_msgs)
 
@@ -196,9 +195,9 @@ func TestMultipleEvents(t *testing.T) {
 
 func TestConcurrentMessages(t *testing.T) {
 
-	expected_msgs := []string{"M", "Cnewuser2", "Wnewuser2", 
-							  "MAandB", "MAandC", "Wnewuser2",
-							  "Mblabla", "Dnewuser2"}
+	expected_msgs := []string{"M", "Cnewuser2", "Wnewuser2",
+		"MAandB", "MAandC", "Wnewuser2",
+		"Mblabla", "Dnewuser2"}
 
 	tS := newTestStruct(t, expected_msgs)
 
@@ -209,7 +208,7 @@ func TestConcurrentMessages(t *testing.T) {
 
 	c2.write("W")
 	tS.c.write("W")
-	
+
 	// both clients writing to server
 	c2.write("MAandB")
 	tS.c.write("MAandC")
@@ -227,10 +226,9 @@ func TestConcurrentMessages(t *testing.T) {
 	time.Sleep(human_interval)
 	expect(t, tS.h.content, "blabla")
 
-	time.Sleep(human_interval)	
+	time.Sleep(human_interval)
 	c2.Conn.Close()
 
 	<-tS.done
 	tS.c.Conn.Close()
 }
-
