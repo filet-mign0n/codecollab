@@ -1,6 +1,6 @@
 # CodeCollab
 
-Online collaborative code editor. The server is written in Go to leverage the grace of concurrency patterns.
+Collaborative code editor. The server is written in Go to leverage the grace of concurrency patterns.
 ###Requirement
 Go 1.5 or above
 ###Install
