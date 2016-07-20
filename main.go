@@ -29,7 +29,6 @@ func main() {
 	flag.Parse()
 
 	h := NewHub()
-
 	go h.run()
 
 	http.Handle("/", http.FileServer(http.Dir("./public")))
