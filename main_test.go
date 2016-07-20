@@ -9,7 +9,7 @@ import (
 	"time"
 )
 
-const human_interval = 100 * time.Millisecond
+const human_interval = 50 * time.Millisecond
 
 func expect(t *testing.T, a interface{}, b interface{}) {
 	t.Log("Expected", b, "got", a)
@@ -202,7 +202,7 @@ func TestConcurrentMessages(t *testing.T) {
 	tS := newTestStruct(t, expected_msgs)
 
 	time.Sleep(human_interval)
-	
+
 	c2 := newWSClient(t, tS.server.URL)
 	c2.write("Cnewuser2")
 
@@ -211,8 +211,13 @@ func TestConcurrentMessages(t *testing.T) {
 	c2.write("W")
 	tS.c.write("W")
 
+	time.Sleep(human_interval)
+
 	// both clients writing to server
 	c2.write("MAandB")
+
+	time.Sleep(human_interval)
+	
 	tS.c.write("MAandC")
 
 	time.Sleep(human_interval)
@@ -223,12 +228,17 @@ func TestConcurrentMessages(t *testing.T) {
 	time.Sleep(human_interval)
 
 	c2.write("W")
+
+	time.Sleep(human_interval)
+	
 	c2.write("Mblabla")
 
 	time.Sleep(human_interval)
+
 	expect(t, tS.h.content, "blabla")
 
 	time.Sleep(human_interval)
+	
 	c2.Conn.Close()
 
 	<-tS.done
