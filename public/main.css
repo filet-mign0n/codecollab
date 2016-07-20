@@ -1,0 +1,125 @@
+* {
+    padding: 0px;
+    border: 0px;
+    margin: 0px;
+    outline: none;
+}
+
+/* The Modal (background) */
+.modal {
+    display: block;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width:  819px; 
+    height: 100%; 
+    overflow: auto; 
+    background-color: rgb(0,0,0); 
+    background-color: rgba(0,0,0,0.4); 
+}
+
+.modal-content {
+    border-radius: 15px;
+    text-align: center;
+    vertical-align: middle;
+    background-color: #80ccff;
+    color: LightGreen;
+    margin: 35% auto; 
+    padding: 20px;
+    border: 1px solid #888;
+    width: 150px; 
+    height: 70px;
+}
+
+input[type="text"]
+{
+    font-size:1.1em
+}
+
+.modal-content button {
+  font-size: 1em;
+  color: #fff;
+  padding: 4px 6px;
+  background-color: #6496c8;
+  border: none;
+  border-radius: 15px;
+  box-shadow: 0 3px #27496d;
+}
+
+button:hover,
+button.hover {
+  background-color: #417cb8
+}
+
+button:active,
+button.active {
+  background-color: #417cb8;
+  box-shadow: 0 5px #27496d;
+  transform: translateY(4px);
+}
+
+#container {
+    width: 835px;
+}
+
+#head {
+    font-family: "Optima";
+    background-color: #0088cc;
+    text-shadow: 2px 2px #cc33ff;
+    text-align: center;
+    vertical-align: middle;
+    font-weight: bold;
+    font-size: 2em;
+    color: #ffffff;
+    height: 50px;
+    width: 819px;
+}
+
+#info {
+    display: table;
+    font-family: "Optima";
+    background-color: #0088cc;
+    text-align: center;
+    color: lightgreen;
+    width: 819px;
+    height: 25px;
+}
+
+.userinfo {
+    display: inline-block;
+    color: #ffffff;
+    font-family: "Optima";
+    text-shadow: 1px 1px black;
+}
+
+#enum #lines {
+    resize: none;
+    outline: none;
+    box-shadow: none;
+    background-color: #006699;
+    text-shadow: 2px 2px #cc33ff;
+    font-size: 1.2em;
+    line-height: 1.2em;
+    text-align: center;
+    overflow: hidden;
+    color: #ffffff;
+    width: 33px;
+    height: 2286px;
+    float: left;
+}
+
+#codepad #content {
+    resize: none;
+    outline: none;
+    box-shadow: none;
+    font-size: 1.2em;
+    line-height: 1.2em;
+    color: black;
+    overflow: scroll;
+    width: 786px;
+    height: 2300px;
+    background-color: #e6f7ff;
+    float: left;
+}
+
