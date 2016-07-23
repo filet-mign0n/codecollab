@@ -33,6 +33,10 @@ func (h *hub) run() {
 	for {
 		select {
 		case c := <-h.register:
+			for k, _ := range h.clients {
+				logDebug("sending C to k.name " + k.ip)
+				c.send <- []byte("C" + k.name)
+			}
 			h.clients[c] = true
 			c.send <- []byte("M" + h.content)
 			logDebug("case c := <-h.register: " + c.ip + " " + c.name)
@@ -43,7 +47,7 @@ func (h *hub) run() {
 			if ok {
 				logDebug("case c := <-h.unregister: " + c.ip + " " + c.name)
 				logVerbose(c.name + " disconnected")
-				h.broadcastMessageOthers(&msg{"D", c.name})
+				h.broadcastMessage(false, &msg{"D", c.name})
 				delete(h.clients, c)
 				close(c.send)
 			}
@@ -54,37 +58,31 @@ func (h *hub) run() {
 			if m.key == "M" {
 				h.content = m.data
 			}
-			h.broadcastMessage(m)
+			h.broadcastMessage(true, m)
 			break
 
 		case m := <-h.broadcastOthers:
 			logDebug("case m:= <-h.broadcastOthers: " + m.key + m.data)
-			h.broadcastMessageOthers(m)
+			h.broadcastMessage(false, m)
 			break
 		}
 	}
 }
 
-func (h *hub) broadcastMessageOthers(m *msg) {
+func (h *hub) broadcastMessage(emit bool, m *msg) {
 
 	for c := range h.clients {
-		if c.name != m.data {
-			logDebug("broadcastMessageOthers " + m.key + m.data + " to " + c.ip + " " + c.name)
-			c.send <- []byte(m.key + m.data)
+		if !emit {
+			if c.name != m.data {
+				logDebug("emitting " + m.key + m.data + " to " + c.ip + " " + c.name)
+				c.send <- []byte(m.key + m.data)
+			}
+		} else {
+			logDebug("broadcasting " + m.key + m.data + " to " + c.ip + " " + c.name)
+			c.send <- []byte(m.key + m.data)	
 		}
+
 	}
 }
 
-func (h *hub) broadcastMessage(m *msg) {
-	for c := range h.clients {
-		select {
-		case c.send <- []byte(m.key + m.data):
-			logDebug("broadcastMessage " + m.key + m.data + " to " + c.ip + " " + c.name)
-			break
-		// We can't reach the client
-		default:
-			close(c.send)
-			delete(h.clients, c)
-		}
-	}
-}
+
