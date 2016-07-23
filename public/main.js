@@ -10,7 +10,6 @@ $(function() {
     });
     
     $("#inputname").on("keydown", function(e) {
-        console.log("input keydown")
         if (e.keyCode == 13 && !$("button").attr("disabled")) {
             $("button").click();
         } else if ($("button").attr("disabled")) {
@@ -56,7 +55,6 @@ function join(username) {
 
     // Whenever we receive a message, update textarea
     conn.onmessage = function(e) {
-        console.log(e, content.val())
         msgKey = e.data.substring(0, 1)
         msgData = e.data.substring(1)
         
@@ -107,7 +105,6 @@ function join(username) {
 
     // allow 300ms interval before sending updated textarea
     content.on("keyup", function() {
-        console.log("keyup")
         typingTimeoutId = window.setTimeout(function() {
             isTyping = false;
         }, 300);
@@ -115,7 +112,6 @@ function join(username) {
         window.clearTimeout(timeoutId);
         timeoutId = window.setTimeout(function() {
             if (isTyping) return;
-            console.log("keyup is not typing")
             conn.send("M"+content.val());
         }, 300);
     });

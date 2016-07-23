@@ -1,11 +1,11 @@
 package main
 
 import (
-	"errors"
-	"github.com/gorilla/websocket"
 	"log"
-	"net/http"
 	"time"
+	"errors"
+	"net/http"
+	"github.com/gorilla/websocket"
 )
 
 const (
@@ -60,6 +60,42 @@ func ServeWs(w http.ResponseWriter, r *http.Request, h *hub) {
 	go c.readLoop()
 }
 
+func (c *client) parse(m []byte) (*msg, error) {
+
+	if len(m) == 0 {
+		return nil, errors.New("ws msg is empty")
+	}
+
+	i := string(m[0])
+	/* WebSocket text messages are parsed,
+	   first we look for the prefix code,
+	   then if any content follows        */
+
+	switch i {
+	// Client is typing
+	case "W":
+		logVerbose(c.name + " is typing")
+		return &msg{"W", c.name}, nil
+	// Sending the current state of client's textarea
+	case "M":
+		logVerbose(c.name + " typing timeout, text area refreshed")
+		logDebug(c.name + " typing timeout, text area refreshed with: " + string(m[1:]))
+		return &msg{"M", string(m[1:])}, nil
+	// Client connected with chosen username
+	case "C":
+		c.name = string(m[1:])
+		if len(m[1:]) > 0 {
+			logVerbose(string(m[1:]) + " connected")
+			return &msg{"C", string(m[1:])}, nil
+		} else {
+			return nil, errors.New(c.ip + " did not provide a username")
+		}
+
+	default:
+		return nil, errors.New("wrong prefix code: " + i + " from: " + c.ip)
+	}
+}
+
 func (c *client) readLoop() {
 	defer func() {
 		logDebug(c.ip + " disconnected")
@@ -106,7 +142,7 @@ func (c *client) writeLoop() {
 
 	defer func() {
 		ticker.Stop()
-		c.ws.Close()
+		//c.ws.Close()
 	}()
 
 	for {
@@ -124,42 +160,6 @@ func (c *client) writeLoop() {
 				return
 			}
 		}
-	}
-}
-
-func (c *client) parse(m []byte) (*msg, error) {
-
-	if len(m) == 0 {
-		return nil, errors.New("ws msg is empty")
-	}
-
-	i := string(m[0])
-	/* WebSocket text messages are parsed,
-	   first we look for the prefix code,
-	   then if any content follows        */
-
-	switch i {
-	// Client is typing
-	case "W":
-		logVerbose(c.name + " is typing")
-		return &msg{"W", c.name}, nil
-	// Sending the current state of client's textarea
-	case "M":
-		logVerbose(c.name + " typing timeout, text area refreshed")
-		logDebug(c.name + " typing timeout, text area refreshed with: " + string(m[1:]))
-		return &msg{"M", string(m[1:])}, nil
-	// Client connected with chosen username
-	case "C":
-		c.name = string(m[1:])
-		if len(m[1:]) > 0 {
-			logVerbose(string(m[1:]) + " connected")
-			return &msg{"C", string(m[1:])}, nil
-		} else {
-			return nil, errors.New(c.ip + " did not provide a username")
-		}
-
-	default:
-		return nil, errors.New("wrong prefix code: " + i + " from: " + c.ip)
 	}
 }
 

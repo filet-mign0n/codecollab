@@ -1,15 +1,15 @@
 package main
 
 import (
-	"flag"
 	"log"
+	"flag"
 	"net/http"
 )
 
 var host = flag.String("h", "localhost", "host")
 var port = flag.String("p", "8000", "port")
 
-// parse logging flags
+// logging level flags
 var debug = flag.Bool("d", false, "debug")
 var verbose = flag.Bool("v", false, "verbose")
 
