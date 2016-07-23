@@ -29,6 +29,7 @@ function join(username) {
     
     populate();
 
+    // enumerate left column to represent line numbers 
     function populate() {
 
         var textarea = document.getElementById("lines");
@@ -42,10 +43,10 @@ function join(username) {
     var content = $("#content");
     var conn = new WebSocket('ws://' + window.location.host + '/ws');
 
-    // Textarea is editable only when socket is opened.
+    
     conn.onopen = function(e) {
         conn.send("C"+username)
-
+        // textarea is editable only when socket is opened.
         content.attr("disabled", false);
     };
 
@@ -60,15 +61,19 @@ function join(username) {
         msgData = e.data.substring(1)
         
         switch(msgKey) {
+            // user described in msgData is typing
             case "W":
                 writting(msgData)
                 break;
+            // update textarea with new content
             case "M":
                 content.val(msgData)
                 break;
+            // user described in msgData connected
             case "C":
                 user(true, msgData) 
                 break;
+            // user described in msgData disconnected
             case "D":
                 user(false, msgData)
                 break;
@@ -81,6 +86,7 @@ function join(username) {
     var typingTimeoutId = null;
     var isTyping = false;
 
+    // notify server when client is writing
     content.on("keydown", function(e) {
         isTyping = true;
         
@@ -99,6 +105,7 @@ function join(username) {
         }
     });
 
+    // allow 300ms interval before sending updated textarea
     content.on("keyup", function() {
         console.log("keyup")
         typingTimeoutId = window.setTimeout(function() {
@@ -113,6 +120,7 @@ function join(username) {
         }, 300);
     });
 
+    // show that user is typing next to name in infobox 
     function writting(name) {
         user_div = $("ul#"+name+".userinfo")
         if (user_div.length) {
@@ -123,6 +131,7 @@ function join(username) {
         }, 1000);
     };
 
+    // add (C) or remove (D) user in infobox 
     function user(bool, name) {
         user_div = $("ul#"+name+".userinfo")
         if (bool && !user_div.length) {
