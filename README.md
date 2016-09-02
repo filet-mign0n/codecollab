@@ -13,7 +13,7 @@ $ cd $GOPATH/src && git clone https://github.com/filet-mign0n/codecollab && cd c
 ```
 ###Launch
 ```sh
-> cd $GOPATH/src/codecollab && ./codecollab
+$ cd $GOPATH/src/codecollab && ./codecollab
 ```
 ###Chose your host and port
 ```sh
