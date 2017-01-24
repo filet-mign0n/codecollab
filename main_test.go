@@ -2,8 +2,8 @@ package main
 
 import (
 	"github.com/gorilla/websocket"
-	"net/http"
 	"net/http/httptest"
+	"net/http"
 	"reflect"
 	"testing"
 	"time"
